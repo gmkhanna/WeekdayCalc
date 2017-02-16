@@ -8,15 +8,24 @@ namespace WeekdayCalc
         private string _date;
         private int _parsedFullYear;
         private int _parsedLastTwoYear;
+        private int _century;
         private int _parsedDay;
         private int _parsedMonth;
         private int _remainderYear;
         private int _dayPlusYear;
         private int _afterMonthValue;
-        public static Dictionary<int, int> monthKey = new Dictionary<int, int>()
+        private int _afterCenturyValue;
+        private int _afterAddedYearDigits;
+        private Dictionary<int, int> _monthKey = new Dictionary<int, int>()
         {
             {01, 1}, {02, 4}, {03, 4}, {04, 0}, {05, 2}, {06, 5}, {07, 0}, {08, 3}, {09, 6}, {10, 1}, {11, 4}, {12, 6}
         };
+
+        private Dictionary<int, int> _centuryKeys = new Dictionary<int, int>()
+        {
+            {0, 6}, {100, 4}, {200, 2}, {300, 0}
+        };
+
         public Weekday(string date)
         {
             _date = date;
@@ -27,6 +36,9 @@ namespace WeekdayCalc
             string spliceHalfYear = date.Substring(8,2);
             _parsedLastTwoYear = int.Parse(spliceHalfYear);
 
+            string spliceHalfFirstTwoYear = date.Substring(6,2);
+            _century = int.Parse(spliceHalfFirstTwoYear) * 100;
+
             string spliceDay = date.Substring(3,2);
             _parsedDay = int.Parse(spliceDay);
 
@@ -35,26 +47,39 @@ namespace WeekdayCalc
 
             _remainderYear = _parsedLastTwoYear % 4;
             _dayPlusYear = _parsedLastTwoYear/4 + _parsedDay;
-            _afterMonthValue = _dayPlusYear + monthKey[_parsedMonth];
+            _afterMonthValue = _dayPlusYear + _monthKey[_parsedMonth];
+
+            int centuryKey = Math.Abs(_century % 400);
+
+            foreach(KeyValuePair<int, int> entry in _centuryKeys)
+            {
+                if(centuryKey == entry.Key)
+                {
+                    _afterCenturyValue = _afterMonthValue + entry.Value;
+                }
+            }
         }
 
         public void LeapYearTest()
         {
-            if (_parsedFullYear % 400 == 0)
+            if(_parsedMonth == 01 || _parsedMonth == 02)
             {
-                _afterMonthValue += 1;
-            }
-            else if(_parsedFullYear % 100 == 0)
-            {
-                _afterMonthValue += 0;
-            }
-            else if (_parsedFullYear % 4 == 0)
-            {
-                _afterMonthValue += 1;
-            }
-            else
-            {
-                _afterMonthValue += 0;
+                if (_parsedFullYear % 400 == 0)
+                {
+                    _afterMonthValue -= 1;
+                }
+                else if(_parsedFullYear % 100 == 0)
+                {
+                    _afterMonthValue -= 0;
+                }
+                else if (_parsedFullYear % 4 == 0)
+                {
+                    _afterMonthValue -= 1;
+                }
+                else
+                {
+                    _afterMonthValue -= 0;
+                }
             }
         }
 
@@ -82,6 +107,16 @@ namespace WeekdayCalc
         {
             LeapYearTest();
             return _afterMonthValue;
+        }
+
+        public int GetAfterAddedYearDigits()
+        {
+            return _afterAddedYearDigits = GetAfterCenturyValue() + _parsedLastTwoYear;
+        }
+
+        public int GetAfterCenturyValue()
+        {
+            return _afterCenturyValue;
         }
     }
 

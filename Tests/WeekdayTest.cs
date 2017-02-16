@@ -96,5 +96,35 @@ namespace WeekdayCalc
             //Assert
             Assert.Equal(testResult, result);
         }
+
+        [Fact]
+        public void Test7_CenturyAddition_30()
+        {
+            //Arrange
+            string userInput = "02/16/2017";
+            int testResult = 30;
+
+            //Act
+            Weekday newWeekday = new Weekday(userInput);
+            int result = newWeekday.GetAfterCenturyValue();
+
+            //Assert
+            Assert.Equal(testResult, result);
+        }
+
+        [Fact]
+        public void Test8_AddYearDigitsToCentury_47()
+        {
+            //Arrange
+            string userInput = "02/16/2017";
+            int testResult = 47;
+
+            //Act
+            Weekday newWeekday = new Weekday(userInput);
+            int result = newWeekday.GetAfterAddedYearDigits();
+
+            //Assert
+            Assert.Equal(testResult, result);
+        }
     }
 }
