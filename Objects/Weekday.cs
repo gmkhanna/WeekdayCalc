@@ -16,6 +16,7 @@ namespace WeekdayCalc
         private int _afterMonthValue;
         private int _afterCenturyValue;
         private int _afterAddedYearDigits;
+        private int _finalNumber;
         private Dictionary<int, int> _monthKey = new Dictionary<int, int>()
         {
             {01, 1}, {02, 4}, {03, 4}, {04, 0}, {05, 2}, {06, 5}, {07, 0}, {08, 3}, {09, 6}, {10, 1}, {11, 4}, {12, 6}
@@ -24,6 +25,11 @@ namespace WeekdayCalc
         private Dictionary<int, int> _centuryKeys = new Dictionary<int, int>()
         {
             {0, 6}, {100, 4}, {200, 2}, {300, 0}
+        };
+
+        private Dictionary<int, string> _dayKeys = new Dictionary<int, string>()
+        {
+            {1, "Sunday"}, {2, "Monday"}, {3, "Tuesday"}, {4, "Wednesday"}, {5, "Thursday"}, {6, "Friday"}, {0, "Saturday"}
         };
 
         public Weekday(string date)
@@ -49,6 +55,15 @@ namespace WeekdayCalc
             _dayPlusYear = _parsedLastTwoYear/4 + _parsedDay;
             _afterMonthValue = _dayPlusYear + _monthKey[_parsedMonth];
 
+            LeapYearTest();
+            CenturyTest();
+
+            _afterAddedYearDigits = GetAfterCenturyValue() + _parsedLastTwoYear;
+            _finalNumber = _afterAddedYearDigits % 7;
+        }
+
+        public void CenturyTest()
+        {
             int centuryKey = Math.Abs(_century % 400);
 
             foreach(KeyValuePair<int, int> entry in _centuryKeys)
@@ -105,18 +120,36 @@ namespace WeekdayCalc
 
         public int GetAfterMonthValue()
         {
-            LeapYearTest();
             return _afterMonthValue;
         }
 
         public int GetAfterAddedYearDigits()
         {
-            return _afterAddedYearDigits = GetAfterCenturyValue() + _parsedLastTwoYear;
+            return _afterAddedYearDigits;
         }
 
         public int GetAfterCenturyValue()
         {
             return _afterCenturyValue;
+        }
+
+        public string GetWeekDay()
+        {
+            string result = "";
+
+            foreach(KeyValuePair<int, string> entry in _dayKeys)
+            {
+                if(_finalNumber == entry.Key)
+                {
+                    result = entry.Value;
+                    break;
+                }
+                else
+                {
+                }
+            }
+
+            return result;
         }
     }
 

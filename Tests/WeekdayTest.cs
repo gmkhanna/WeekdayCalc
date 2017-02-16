@@ -126,5 +126,20 @@ namespace WeekdayCalc
             //Assert
             Assert.Equal(testResult, result);
         }
+
+        [Fact]
+        public void Test9_FinalWeekTest_Thursday()
+        {
+            //Arrange
+            string userInput = "02/16/2017";
+            string testResult = "Thursday";
+
+            //Act
+            Weekday newWeekday = new Weekday(userInput);
+            string result = newWeekday.GetWeekDay();
+
+            //Assert
+            Assert.Equal(testResult, result);
+        }
     }
 }
