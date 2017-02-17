@@ -146,8 +146,8 @@ namespace WeekdayCalc
         public void Test10_YearOver10000_Thursday()
         {
             //Arrange
-            string userInput = "02/16/2017";
-            string testResult = "Thursday";
+            string userInput = "02/16/10000";
+            string testResult = "Wednesday";
 
             //Act
             Weekday newWeekday = new Weekday(userInput);
