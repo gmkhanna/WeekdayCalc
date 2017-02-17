@@ -37,6 +37,9 @@ A basic C# weekday calculator.
     * __Input:__ 47
     * __Ouput:__ 5
 
+## Known Bugs
+Years in the zero century do not return a correct value.
+
 Figure 1
 
 |Jan|Feb|Mar|Apr|May|June|July|Aug|Sept|Oct|Nov|Dec|
