@@ -36,13 +36,13 @@ namespace WeekdayCalc
         {
             _date = date;
 
-            string spliceFullYear = date.Substring(6,4);
+            string spliceFullYear = date.Substring(6);
             _parsedFullYear = int.Parse(spliceFullYear);
 
-            string spliceHalfYear = date.Substring(8,2);
+            string spliceHalfYear = date.Substring(date.Length-2,2);
             _parsedLastTwoYear = int.Parse(spliceHalfYear);
 
-            string spliceHalfFirstTwoYear = date.Substring(6,2);
+            string spliceHalfFirstTwoYear = date.Substring(6, date.Length-8);
             _century = int.Parse(spliceHalfFirstTwoYear) * 100;
 
             string spliceDay = date.Substring(3,2);
